@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 
-// Custom hook that will alert once reaching the bottom of the page
 function useBottomPage(offset = 100) {
     const [bottom, setBottom] = useState(false);
 

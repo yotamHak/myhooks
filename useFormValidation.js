@@ -1,20 +1,5 @@
 import { useState, useEffect } from "react";
 
-// Validation file example:
-// export default function validateSettings(values) {
-//     let errors = {};
-//
-//     if (!values.username) {
-//         errors.username = "Username is required";
-//     }
-//
-//     if (!values.password) {
-//         errors.password = "Password is required"
-//     }
-//
-//     return errors;
-// }
-
 function useFormValidation(initialState, validate, authenticate) {
     const [values, setValues] = useState(initialState);
     const [errors, setErrors] = useState({});

@@ -1,6 +1,5 @@
 import { useRef, useEffect } from "react";
 
-// Custom hook for saving previous value
 function usePrevious(value) {
     const ref = useRef();
 

@@ -1,6 +1,5 @@
 import { useEffect, useRef, } from 'react';
 
-// Custom hook for an setTimeout
 function useInterval(callback, delay) {
     const savedCallback = useRef();
 

@@ -10,8 +10,6 @@ const getCache = (key, initial) => {
     return cached !== null ? cached : initial
 }
 
-// custom hook for local storage
-// Usage: const [state, setState] = useLocalStorage("LOCAL_STORAGE_KEY", initialValue)
 const useLocalStorage = (key, initial) => {
     const [nativeState, setNativeState] = React.useState(getCache(key, initial))
     const setState = state => {

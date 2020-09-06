@@ -1,19 +1,11 @@
 import { useEffect, useState, } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { googleLoggedIn, googleLoggedOut, googleClientReady } from '../actions';
-import { useHistory } from 'react-router-dom';
 import { gapi } from 'gapi-script';
 
 // Custom hook to initialize and use the Google API
 function useGapi(options,) {
-    const google = useSelector((state) => state.authentication.google);
-
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-
-    const dispatch = useDispatch();
-    const history = useHistory();
 
     const {
         apiKey,
@@ -48,7 +40,6 @@ function useGapi(options,) {
                 updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
 
                 // Initialize and make the API request.
-                !google.googleClientReady && dispatch(googleClientReady(true))
                 onLoaded && onLoaded()
                 setIsLoading(false)
             });
@@ -58,8 +49,6 @@ function useGapi(options,) {
         if (!isSignedIn) {
             // gapi.auth2.getAuthInstance().signIn();
         } else {
-            localStorage.setItem('gTokenId', gapi.client.getToken().access_token)
-
             const userInfo = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
             const basicProfile = {
                 id: userInfo && userInfo.getId(),
@@ -72,7 +61,6 @@ function useGapi(options,) {
 
             setIsAuthenticated(true);
             setCurrentUser(basicProfile);
-            google.profile === null && dispatch(googleLoggedIn(basicProfile))
         }
     };
 
@@ -88,10 +76,7 @@ function useGapi(options,) {
     async function handleSignOut() {
         try {
             await gapi.auth2.getAuthInstance().signOut();
-            localStorage.removeItem('gTokenId');
             setIsAuthenticated(false);
-            dispatch(googleLoggedOut());
-            history.push('/');
         } catch (error) {
             console.log(error);
             throw new Error('Google API not loaded', error);
